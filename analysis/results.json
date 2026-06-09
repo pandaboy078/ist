@@ -1,0 +1,174 @@
+{
+    "table": [
+        {
+            "Model": "linear_regression",
+            "Sampling_Method": "population",
+            "R2_Score": 1.0,
+            "MAE": 2.8e-05,
+            "RMSE": 3.2e-05
+        },
+        {
+            "Model": "linear_regression",
+            "Sampling_Method": "sample_random",
+            "R2_Score": 1.0,
+            "MAE": 2.9e-05,
+            "RMSE": 3.3e-05
+        },
+        {
+            "Model": "linear_regression",
+            "Sampling_Method": "sample_systematic",
+            "R2_Score": 1.0,
+            "MAE": 2.8e-05,
+            "RMSE": 3.3e-05
+        },
+        {
+            "Model": "linear_regression",
+            "Sampling_Method": "sample_stratified",
+            "R2_Score": 1.0,
+            "MAE": 2.8e-05,
+            "RMSE": 3.2e-05
+        },
+        {
+            "Model": "linear_regression",
+            "Sampling_Method": "sample_cluster",
+            "R2_Score": 1.0,
+            "MAE": 2.8e-05,
+            "RMSE": 3.3e-05
+        },
+        {
+            "Model": "random_forest",
+            "Sampling_Method": "population",
+            "R2_Score": 0.974566,
+            "MAE": 0.785236,
+            "RMSE": 1.911693
+        },
+        {
+            "Model": "random_forest",
+            "Sampling_Method": "sample_random",
+            "R2_Score": 0.955324,
+            "MAE": 1.226855,
+            "RMSE": 2.533637
+        },
+        {
+            "Model": "random_forest",
+            "Sampling_Method": "sample_systematic",
+            "R2_Score": 0.947497,
+            "MAE": 1.358962,
+            "RMSE": 2.746647
+        },
+        {
+            "Model": "random_forest",
+            "Sampling_Method": "sample_stratified",
+            "R2_Score": 0.956099,
+            "MAE": 1.19111,
+            "RMSE": 2.511565
+        },
+        {
+            "Model": "random_forest",
+            "Sampling_Method": "sample_cluster",
+            "R2_Score": 0.911366,
+            "MAE": 1.797969,
+            "RMSE": 3.568696
+        },
+        {
+            "Model": "xgboost",
+            "Sampling_Method": "population",
+            "R2_Score": 0.977754,
+            "MAE": 0.793821,
+            "RMSE": 1.787852
+        },
+        {
+            "Model": "xgboost",
+            "Sampling_Method": "sample_random",
+            "R2_Score": 0.96786,
+            "MAE": 1.075358,
+            "RMSE": 2.148971
+        },
+        {
+            "Model": "xgboost",
+            "Sampling_Method": "sample_systematic",
+            "R2_Score": 0.960377,
+            "MAE": 1.223371,
+            "RMSE": 2.386079
+        },
+        {
+            "Model": "xgboost",
+            "Sampling_Method": "sample_stratified",
+            "R2_Score": 0.963835,
+            "MAE": 1.191602,
+            "RMSE": 2.279572
+        },
+        {
+            "Model": "xgboost",
+            "Sampling_Method": "sample_cluster",
+            "R2_Score": 0.959461,
+            "MAE": 1.319799,
+            "RMSE": 2.413497
+        }
+    ],
+    "verdict": {
+        "best_overall_model": "linear_regression",
+        "best_overall_sampling": "population",
+        "best_overall_r2": 1.0,
+        "best_overall_rmse": 3.2e-05,
+        "best_overall_mae": 2.8e-05,
+        "best_sample_model": "linear_regression",
+        "best_sample_sampling": "sample_random",
+        "best_sample_r2": 1.0,
+        "best_sample_rmse": 3.3e-05,
+        "best_sample_mae": 2.9e-05,
+        "best_sampling_method_by_avg_r2": "sample_random",
+        "best_sampling_avg_r2": 0.9743946666666666,
+        "best_sampling_avg_rmse": 1.5608803333333334,
+        "best_sampling_avg_mae": 0.767414,
+        "population_baseline": [
+            {
+                "Model": "linear_regression",
+                "Sampling_Method": "population",
+                "R2_Score": 1.0,
+                "MAE": 2.8e-05,
+                "RMSE": 3.2e-05
+            },
+            {
+                "Model": "random_forest",
+                "Sampling_Method": "population",
+                "R2_Score": 0.974566,
+                "MAE": 0.785236,
+                "RMSE": 1.911693
+            },
+            {
+                "Model": "xgboost",
+                "Sampling_Method": "population",
+                "R2_Score": 0.977754,
+                "MAE": 0.793821,
+                "RMSE": 1.787852
+            }
+        ]
+    },
+    "sampling_summary": [
+        {
+            "Sampling_Method": "sample_cluster",
+            "R2_Score": 0.9569423333333335,
+            "MAE": 1.0392653333333333,
+            "RMSE": 1.9940753333333336
+        },
+        {
+            "Sampling_Method": "sample_random",
+            "R2_Score": 0.9743946666666666,
+            "MAE": 0.767414,
+            "RMSE": 1.5608803333333334
+        },
+        {
+            "Sampling_Method": "sample_stratified",
+            "R2_Score": 0.9733113333333333,
+            "MAE": 0.7942466666666667,
+            "RMSE": 1.5970563333333334
+        },
+        {
+            "Sampling_Method": "sample_systematic",
+            "R2_Score": 0.9692913333333334,
+            "MAE": 0.8607869999999999,
+            "RMSE": 1.7109196666666666
+        }
+    ]
+}

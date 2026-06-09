@@ -1,0 +1,16 @@
+Model,Sampling_Method,R2_Score,MAE,RMSE
+linear_regression,population,1.0,2.8e-05,3.2e-05
+linear_regression,sample_random,1.0,2.9e-05,3.3e-05
+linear_regression,sample_systematic,1.0,2.8e-05,3.3e-05
+linear_regression,sample_stratified,1.0,2.8e-05,3.2e-05
+linear_regression,sample_cluster,1.0,2.8e-05,3.3e-05
+random_forest,population,0.974566,0.785236,1.911693
+random_forest,sample_random,0.955324,1.226855,2.533637
+random_forest,sample_systematic,0.947497,1.358962,2.746647
+random_forest,sample_stratified,0.956099,1.19111,2.511565
+random_forest,sample_cluster,0.911366,1.797969,3.568696
+xgboost,population,0.977754,0.793821,1.787852
+xgboost,sample_random,0.96786,1.075358,2.148971
+xgboost,sample_systematic,0.960377,1.223371,2.386079
+xgboost,sample_stratified,0.963835,1.191602,2.279572
+xgboost,sample_cluster,0.959461,1.319799,2.413497

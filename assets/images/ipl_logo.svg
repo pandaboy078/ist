@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" width="120" height="60">
+  <!-- Rainbow arc sweep -->
+  <defs>
+    <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5e642"/>
+      <stop offset="40%" style="stop-color:#f0a500"/>
+      <stop offset="70%" style="stop-color:#e03070"/>
+      <stop offset="100%" style="stop-color:#e03070"/>
+    </linearGradient>
+    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a3a8c"/>
+      <stop offset="100%" style="stop-color:#2952c4"/>
+    </linearGradient>
+  </defs>
+  <!-- The rainbow arc -->
+  <path d="M 10 50 Q 5 10 28 5 Q 40 2 42 15" stroke="url(#arcGrad)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <!-- Orange ground line -->
+  <path d="M 6 48 Q 20 50 32 46" stroke="#e07820" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Simplified batsman silhouette -->
+  <!-- Body -->
+  <ellipse cx="20" cy="35" rx="6" ry="10" fill="url(#bodyGrad)" transform="rotate(-10 20 35)"/>
+  <!-- Head/helmet -->
+  <circle cx="18" cy="20" r="5" fill="#1a3a8c"/>
+  <!-- Bat arm up -->
+  <path d="M 18 22 L 8 8" stroke="#1a3a8c" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Bat blade -->
+  <rect x="3" y="4" width="9" height="2.5" rx="1" fill="#1a3a8c" transform="rotate(-30 7 5)"/>
+  <!-- Legs -->
+  <path d="M 18 44 L 14 58" stroke="#1a3a8c" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 22 44 L 24 58" stroke="#1a3a8c" stroke-width="3" stroke-linecap="round"/>
+  <!-- IPL text -->
+  <text x="45" y="44" font-family="Arial Black, sans-serif" font-size="24" font-weight="900" fill="#1a3a8c" letter-spacing="1">IPL</text>
+</svg>
