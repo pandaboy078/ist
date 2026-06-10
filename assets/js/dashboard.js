@@ -1,6 +1,49 @@
 // Global chart references
 let charts = {};
 
+// ── VIEW ROUTING ───────────────────────────────────
+let dashboardInitialized = false;
+
+function showHome() {
+  const homePage = document.getElementById('home-page');
+  const appContainer = document.querySelector('.app-container');
+  if (!homePage || !appContainer) return;
+  appContainer.classList.add('lp-hidden');
+  homePage.classList.remove('lp-hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showDashboard(targetSection) {
+  const homePage = document.getElementById('home-page');
+  const appContainer = document.querySelector('.app-container');
+  if (!homePage || !appContainer) return;
+  homePage.classList.add('lp-hidden');
+  appContainer.classList.remove('lp-hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  // Navigate to a specific section if requested
+  if (targetSection) {
+    const navItems = document.querySelectorAll('.nav-item[data-section]');
+    const sections = document.querySelectorAll('.dashboard-section');
+    const topbarName = document.getElementById('topbar-page-name');
+    navItems.forEach(n => n.classList.remove('active'));
+    sections.forEach(s => {
+      s.classList.remove('active');
+      if (s.id === targetSection) s.classList.add('active');
+    });
+    const matchingNav = document.querySelector(`.nav-item[data-section="${targetSection}"]`);
+    if (matchingNav) matchingNav.classList.add('active');
+    if (topbarName) topbarName.textContent = PAGE_NAMES[targetSection] || targetSection;
+    // Lazy-load special sections
+    if (targetSection === 'leaderboard') setTimeout(initLeaderboard, 60);
+    if (targetSection === 'justification') setTimeout(loadJustificationReport, 60);
+  }
+  // Only fetch data once
+  if (!dashboardInitialized) {
+    dashboardInitialized = true;
+    loadDashboardData();
+  }
+}
+
 // Page name mapping for topbar
 const PAGE_NAMES = {
   dashboard:      "Dashboard Overview",
@@ -14,10 +57,46 @@ const PAGE_NAMES = {
 
 document.addEventListener("DOMContentLoaded", () => {
   initNav();
-  loadDashboardData();
+
+  // Wire landing page CTA buttons
+  const lpIds = [
+    ['lp-hero-enter',      () => showDashboard('dashboard')],
+    ['lp-hero-methodology',() => showDashboard('justification')],
+    ['lp-footer-enter',    () => showDashboard('dashboard')],
+  ];
+  lpIds.forEach(([id, fn]) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', fn);
+  });
 
   const runBtn = document.getElementById("run-pipeline-btn");
   if (runBtn) runBtn.addEventListener("click", runPipeline);
+
+  // #12 — Dynamic footer year
+  const yearEl = document.getElementById('lp-year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // #13 — Back-to-top button visibility
+  const backBtn = document.getElementById('back-to-top');
+  if (backBtn) {
+    window.addEventListener('scroll', () => {
+      backBtn.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+    backBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // #15 — Mark live stat elements as loading
+  document.querySelectorAll('.counter-val, .hud-value, .sdg-metric-val').forEach(el => {
+    if (el.textContent.trim() === '—' || el.textContent.trim() === '−') {
+      el.setAttribute('data-loading', 'true');
+    }
+  });
+
+  // #16 — CSV Export button
+  const csvBtn = document.getElementById('export-csv-btn');
+  if (csvBtn) csvBtn.addEventListener('click', exportLeaderboardCSV);
 });
 
 // ── Sidebar Navigation ─────────────────────────────
@@ -25,6 +104,16 @@ function initNav() {
   const navItems   = document.querySelectorAll(".nav-item[data-section]");
   const sections   = document.querySelectorAll(".dashboard-section");
   const topbarName = document.getElementById("topbar-page-name");
+
+  // Home button in sidebar
+  const homeBtn = document.getElementById("nav-home-btn");
+  if (homeBtn) {
+    homeBtn.addEventListener("click", () => {
+      // Deactivate all nav items
+      navItems.forEach(n => n.classList.remove("active"));
+      showHome();
+    });
+  }
 
   navItems.forEach(item => {
     item.addEventListener("click", () => {
@@ -43,6 +132,9 @@ function initNav() {
       // Update topbar
       if (topbarName) topbarName.textContent = PAGE_NAMES[target] || target;
 
+      // #18 — Dynamic document title
+      document.title = `${PAGE_NAMES[target] || target} — Howzat!`;
+
       // Lazy-init leaderboard on first visit
       if (target === "leaderboard") {
         setTimeout(initLeaderboard, 60);
@@ -50,6 +142,12 @@ function initNav() {
       // Lazy-load justification report on first visit
       if (target === "justification") {
         setTimeout(loadJustificationReport, 60);
+      }
+
+      // Ensure dashboard data is loaded when navigating inside app
+      if (!dashboardInitialized) {
+        dashboardInitialized = true;
+        loadDashboardData();
       }
     });
   });
@@ -106,6 +204,17 @@ async function loadDashboardData() {
     const sdgData = await sdgRes.json();
     updateSdgDOM(sdgData);
     renderSdgCharts(sdgData);
+
+    // #15 — Remove loading skeleton once data is in
+    document.querySelectorAll('[data-loading="true"]').forEach(el => {
+      el.removeAttribute('data-loading');
+    });
+
+    // #6 — Update leaderboard badge dynamically
+    if (cleanStats && cleanStats.active_players) {
+      const badge = document.querySelector('#nav-leaderboard-badge');
+      if (badge) badge.textContent = cleanStats.active_players.toLocaleString();
+    }
 
   } catch (error) {
     console.error("Error loading dashboard data:", error);
@@ -587,43 +696,54 @@ function renderSdgCharts(data) {
 async function runPipeline() {
   const overlay = document.getElementById("pipeline-overlay");
   const logDiv = document.getElementById("pipeline-logs-content");
-  
+
   if (!overlay || !logDiv) return;
-  
+
   overlay.classList.add("active");
   logDiv.innerHTML = "> Starting Howzat! full sports analytics & sustainability pipeline...\n";
-  
+
+  // #4 — 30-second timeout guard
+  let pipelineTimedOut = false;
+  const timeoutId = setTimeout(() => {
+    pipelineTimedOut = true;
+    logDiv.innerHTML += "\n[TIMEOUT] Pipeline did not respond within 30 seconds.\n> Is the Flask server running? Check your terminal.\n";
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "cta-button";
+    closeBtn.style.cssText = "margin-top:1rem";
+    closeBtn.textContent = "Dismiss";
+    closeBtn.onclick = () => { overlay.classList.remove("active"); closeBtn.remove(); };
+    overlay.appendChild(closeBtn);
+  }, 30000);
+
   try {
     const res = await fetch("/api/run-pipeline", { method: "POST" });
     const reader = res.body.getReader();
     const decoder = new TextDecoder("utf-8");
-    
+
     while (true) {
+      if (pipelineTimedOut) break;
       const { value, done } = await reader.read();
       if (done) break;
-      
       const chunk = decoder.decode(value);
       logDiv.innerHTML += chunk;
-      logDiv.scrollTop = logDiv.scrollHeight; // Auto-scroll
+      logDiv.scrollTop = logDiv.scrollHeight;
     }
-    
-    logDiv.innerHTML += "\n> Howzat! Pipeline completed successfully. Re-loading dashboard details...\n";
-    // Reload dashboard
-    await loadDashboardData();
-    
-    // Auto close after 3 seconds
-    setTimeout(() => {
-      overlay.classList.remove("active");
-    }, 3000);
-    
+
+    clearTimeout(timeoutId);
+    if (!pipelineTimedOut) {
+      logDiv.innerHTML += "\n> Howzat! Pipeline completed successfully. Re-loading dashboard...\n";
+      await loadDashboardData();
+      setTimeout(() => { overlay.classList.remove("active"); }, 3000);
+    }
+
   } catch (error) {
-    logDiv.innerHTML += `\n[ERROR] Pipeline run failed: ${error.message}\n`;
+    clearTimeout(timeoutId);
+    logDiv.innerHTML += `\n[ERROR] Pipeline run failed: ${error.message}\n> Check that the Flask server is running on port 5001.\n`;
     console.error("Pipeline failure:", error);
-    
     const closeBtn = document.createElement("button");
     closeBtn.className = "cta-button";
     closeBtn.style.marginTop = "1rem";
-    closeBtn.textContent = "Dismiss HUD";
+    closeBtn.textContent = "Dismiss";
     closeBtn.onclick = () => { overlay.classList.remove("active"); closeBtn.remove(); };
     overlay.appendChild(closeBtn);
   }
@@ -818,3 +938,64 @@ async function loadJustificationReport() {
     container.innerHTML = `<div style="color:var(--accent-orange);padding:2rem">Error loading report: ${e.message}</div>`;
   }
 }
+
+// ── #16 CSV Export ──────────────────────────────────
+function exportLeaderboardCSV() {
+  const table = document.querySelector('#leaderboard-body')?.closest('table');
+  if (!table) { alert('Load the leaderboard first.'); return; }
+
+  const rows = [];
+  const headers = [...table.querySelectorAll('thead th')].map(th => th.textContent.trim());
+  rows.push(headers.join(','));
+
+  table.querySelectorAll('tbody tr').forEach(tr => {
+    const cells = [...tr.querySelectorAll('td')].map(td => {
+      const text = td.textContent.trim().replace(/,/g, '');
+      return `"${text}"`;
+    });
+    rows.push(cells.join(','));
+  });
+
+  const csv = rows.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ipl_leaderboard.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── #17 Prism.js Syntax Highlighting ───────────────
+function loadPrism() {
+  if (window.Prism) { Prism.highlightAll(); return; }
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css';
+  document.head.appendChild(link);
+
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js';
+  script.onload = () => {
+    const pyScript = document.createElement('script');
+    pyScript.src = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js';
+    pyScript.onload = () => {
+      // Re-apply class so Prism picks up the code blocks
+      document.querySelectorAll('pre code').forEach(block => {
+        if (!block.classList.contains('language-python')) {
+          block.classList.add('language-python');
+        }
+      });
+      Prism.highlightAll();
+    };
+    document.head.appendChild(pyScript);
+  };
+  document.head.appendChild(script);
+}
+
+// Trigger Prism when Source Code section is visited
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.nav-item[data-section="implementation"]').forEach(btn => {
+    btn.addEventListener('click', () => setTimeout(loadPrism, 300));
+  });
+});

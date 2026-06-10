@@ -15,15 +15,104 @@
 </head>
 <body>
 
-<div class="app-container">
+<!-- ═══════════════════════════════════════
+     LANDING PAGE — HOME VIEW
+════════════════════════════════════════ -->
+<section id="home-page">
+
+  <!-- Sticky Nav Bar -->
+  <nav class="lp-nav">
+    <a class="lp-nav-brand" href="#" id="lp-brand-logo" onclick="return false;">
+      <img src="/assets/images/ipl_logo.png" alt="IPL Logo">
+      <div class="lp-nav-brand-text">
+        <div class="lp-nav-brand-name">Howzat!</div>
+        <div class="lp-nav-brand-sub">IPL Analytics v2.0</div>
+      </div>
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="lp-hero">
+    <h1 class="lp-headline">
+      IPL Batting <span class="hl-green">Efficiency</span> <span class="hl-orange">Analysis</span>
+    </h1>
+    <p class="lp-tagline">
+      Evaluating <strong>Statistical Sampling Techniques</strong> and <strong>Machine Learning Models</strong><br>
+      Using IPL Data (2008–2025)
+    </p>
+    <div class="lp-cta-group">
+      <button class="lp-btn-primary" id="lp-hero-enter">
+        <i class="fa-solid fa-chart-line"></i> Enter Dashboard
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Metrics Strip -->
+  <div class="lp-metrics-strip">
+    <div class="lp-metric">
+      <div class="lp-metric-val orange">570+</div>
+      <div class="lp-metric-label">Batsman Profiles</div>
+      <div class="lp-metric-sub">Clean population dataset</div>
+    </div>
+    <div class="lp-metric">
+      <div class="lp-metric-val blue">1,247</div>
+      <div class="lp-metric-label">Match Files</div>
+      <div class="lp-metric-sub">Cricsheet 2008–2025</div>
+    </div>
+    <div class="lp-metric">
+      <div class="lp-metric-val gold">15</div>
+      <div class="lp-metric-label">ML Models</div>
+      <div class="lp-metric-sub">3 algorithms × 5 datasets</div>
+    </div>
+    <div class="lp-metric">
+      <div class="lp-metric-val green">3.6M+</div>
+      <div class="lp-metric-label">Trees Planted 🌳</div>
+      <div class="lp-metric-sub">Dot Balls × 19</div>
+    </div>
+  </div>
+
+
+
+  <!-- Tech Stack -->
+  <div class="lp-tech-section">
+    <div class="lp-tech-label">Built With</div>
+    <div class="lp-tech-chips">
+      <span class="lp-chip"><i class="fa-brands fa-python"></i> Python 3</span>
+      <span class="lp-chip"><i class="fa-solid fa-flask"></i> Flask</span>
+      <span class="lp-chip"><i class="fa-solid fa-table"></i> Pandas</span>
+      <span class="lp-chip"><i class="fa-solid fa-robot"></i> scikit-learn</span>
+      <span class="lp-chip"><i class="fa-solid fa-bolt"></i> XGBoost</span>
+      <span class="lp-chip"><i class="fa-solid fa-chart-bar"></i> Chart.js</span>
+      <span class="lp-chip"><i class="fa-solid fa-image"></i> Matplotlib</span>
+      <span class="lp-chip"><i class="fa-solid fa-database"></i> Cricsheet</span>
+      <span class="lp-chip"><i class="fa-solid fa-seedling"></i> UN SDG 13 &amp; 15</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="lp-footer">
+    &copy; <span id="lp-year"></span> Howzat! &nbsp;|&nbsp;
+    IPL Green Dot Ball Sustainability &amp; Batsman Efficiency Research &nbsp;|&nbsp;
+    Cricsheet 2008–2025
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="back-to-top" title="Back to top" aria-label="Scroll to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+</section>
+
+<div class="app-container lp-hidden">
 
   <!-- ═══════════════════════════════════════
        SIDEBAR NAVIGATION
   ════════════════════════════════════════ -->
   <aside class="sidebar">
 
-    <!-- Brand -->
-    <a class="sidebar-brand" href="#dashboard" onclick="return false;">
+    <!-- Brand (click → go home) -->
+    <a class="sidebar-brand" href="#" id="sidebar-brand-logo" onclick="showHome(); return false;">
       <img src="/assets/images/ipl_logo.png" alt="IPL Logo" style="width: 80px; height: auto; flex-shrink: 0; filter: drop-shadow(0 2px 8px rgba(0,100,200,0.3));">
       <div class="brand-text">
         <div class="brand-name">Howzat!</div>
@@ -31,56 +120,37 @@
       </div>
     </a>
 
-    <!-- Quick Live Stats -->
-    <div class="sidebar-stats">
-      <div class="sidebar-stat">
-        <span class="sidebar-stat-label">Population</span>
-        <span class="sidebar-stat-val" id="sb-pop">—</span>
-      </div>
-      <div class="sidebar-stat">
-        <span class="sidebar-stat-label">Trees 🌳</span>
-        <span class="sidebar-stat-val green" id="sb-trees">—</span>
-      </div>
-      <div class="sidebar-stat">
-        <span class="sidebar-stat-label">Best R²</span>
-        <span class="sidebar-stat-val blue" id="sb-r2">—</span>
-      </div>
-      <div class="sidebar-stat">
-        <span class="sidebar-stat-label">Best Sampling</span>
-        <span class="sidebar-stat-val orange" id="sb-sampling">—</span>
-      </div>
-    </div>
-
     <!-- Nav -->
     <nav class="sidebar-nav">
-      <div class="nav-section-label">Analytics</div>
+      <button class="nav-item" id="nav-home-btn" data-action="home">
+        <i class="fa-solid fa-house"></i> Home
+      </button>
+
+      <div class="nav-section-label">Main</div>
       <button class="nav-item active" data-section="dashboard">
         <i class="fa-solid fa-chart-line"></i> Dashboard
       </button>
-      <button class="nav-item" data-section="results">
-        <i class="fa-solid fa-square-poll-vertical"></i> Results & Charts
-      </button>
-      <button class="nav-item" data-section="leaderboard">
-        <i class="fa-solid fa-ranking-star"></i> Leaderboard
-        <span class="nav-badge">570</span>
-      </button>
-
-      <div class="nav-section-label">Research</div>
       <button class="nav-item" data-section="objectives">
         <i class="fa-solid fa-list-check"></i> Objectives
       </button>
       <button class="nav-item" data-section="implementation">
         <i class="fa-solid fa-code"></i> Source Code
       </button>
-      <button class="nav-item" data-section="justification">
-        <i class="fa-solid fa-file-lines"></i> Why SRS + LinReg?
-        <span class="nav-badge" style="background:rgba(64,196,255,0.15); color:var(--accent-blue); border-color:rgba(64,196,255,0.3)">PDF</span>
+
+      <div class="nav-section-label">Analytics & Research</div>
+      <button class="nav-item" data-section="results">
+        <i class="fa-solid fa-square-poll-vertical"></i> Results & Charts
       </button>
       <button class="nav-item" data-section="about">
         <i class="fa-solid fa-circle-info"></i> About Dataset
       </button>
-
-      <div class="nav-section-label">Impact</div>
+      <button class="nav-item" data-section="justification">
+        <i class="fa-solid fa-file-lines"></i> Methodology Rationale
+      </button>
+      <button class="nav-item" data-section="leaderboard">
+        <i class="fa-solid fa-ranking-star"></i> Leaderboard
+        <span class="nav-badge" id="nav-leaderboard-badge">570</span>
+      </button>
       <button class="nav-item" data-section="sdg">
         <i class="fa-solid fa-seedling"></i> SDG Sustainability
       </button>
@@ -113,7 +183,7 @@
     <div class="topbar">
       <div class="topbar-title">
         <div class="topbar-page-name" id="topbar-page-name">Dashboard Overview</div>
-        <div class="topbar-breadcrumb">Howzat! IPL Batsman Efficiency Analysis · Sampling Techniques · Green Dot Ball Initiative</div>
+        <div class="topbar-breadcrumb" id="topbar-breadcrumb-el">IPL Analytics · Sampling · SDG Impact</div>
       </div>
       <div class="topbar-right">
         <div class="dataset-pill">
@@ -140,8 +210,47 @@
           <div class="page-header-sub">Real-time IPL batsman efficiency metrics from 1,247 match files (2008–2025)</div>
         </div>
 
-        <!-- 6 KPI Cards -->
-        <div class="hero-counters">
+        <!-- The Research Intro -->
+        <div class="glass-panel" style="margin-bottom: 2rem;">
+          <h2 class="lp-section-title" style="font-size:1.6rem; margin-bottom:1.5rem; text-align:left;">Statistical Inference in Cricket Analytics</h2>
+          <div class="lp-about-grid" style="margin:0; text-align:left;">
+            <div class="lp-about-text">
+              <p>
+                This project analyses real ball-by-ball IPL data from <strong>Cricsheet</strong> (2008–2025)
+                to evaluate how four different statistical sampling strategies influence the accuracy
+                of machine learning models trained to predict <strong>Batting Efficiency Scores</strong>.
+              </p>
+              <p>
+                Three regression algorithms — <strong>Linear Regression</strong>, <strong>Random Forest</strong>,
+                and <strong>XGBoost</strong> — are trained independently on each sampled subset and on
+                the full population, yielding 15 unique model instances that are evaluated on a common
+                gold-standard held-out test set.
+              </p>
+              <p>
+                Beyond performance, every player's dot-ball count is linked to a reforestation initiative:
+                the <strong>Green Dot Ball Sustainability Initiative</strong>, aligning this cricket analytics
+                study with <strong>UN SDG 13</strong> (Climate Action) and <strong>SDG 15</strong> (Life on Land).
+              </p>
+            </div>
+            <div>
+              <div class="lp-formula-box">
+                <h4><i class="fa-solid fa-bolt"></i>&nbsp; Batting Efficiency Score Formula</h4>
+                <div class="lp-formula">
+                  Score =<br>
+                  &nbsp;&nbsp;0.40 &times; Norm(Runs)<br>
+                  + 0.30 &times; Norm(Strike Rate)<br>
+                  + 0.20 &times; Norm(Batting Avg)<br>
+                  + 0.10 &times; Norm(Trees Planted)
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0">
+                  Min-Max normalization applied per feature across the full population before computing the weighted score.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-counters" style="grid-template-columns: repeat(3, 1fr);">
           <div class="counter-card">
             <div class="card-accent"></div>
             <div class="counter-card-icon"><i class="fa-solid fa-users"></i></div>
@@ -163,84 +272,69 @@
             <div class="counter-val" id="hero-trees">—</div>
             <div class="counter-subtext">Dot Balls × 19</div>
           </div>
-          <div class="counter-card purple">
-            <div class="card-accent"></div>
-            <div class="counter-card-icon"><i class="fa-solid fa-bolt"></i></div>
-            <div class="counter-label">Avg Efficiency</div>
-            <div class="counter-val" id="hero-avg-efficiency">—</div>
-            <div class="counter-subtext">Weighted score (0–100)</div>
-          </div>
-          <div class="counter-card">
-            <div class="card-accent"></div>
-            <div class="counter-card-icon"><i class="fa-solid fa-filter"></i></div>
-            <div class="counter-label">Best Sampling</div>
-            <div class="counter-val" id="hero-best-sampling" style="font-size:1.25rem">—</div>
-            <div class="counter-subtext">Optimal by avg R²</div>
-          </div>
-          <div class="counter-card gold">
-            <div class="card-accent"></div>
-            <div class="counter-card-icon"><i class="fa-solid fa-gears"></i></div>
-            <div class="counter-label">Best ML Model</div>
-            <div class="counter-val" id="hero-best-model" style="font-size:1.15rem">—</div>
-            <div class="counter-subtext">Highest R² algorithm</div>
-          </div>
         </div>
 
-        <!-- Verdict + Team Ranking -->
-        <div class="grid-1-2">
+        <!-- 6-Stage Analytical Pipeline Moved from Home -->
+        <div class="glass-panel" style="margin-bottom: 2rem;">
+          <div class="panel-title">
+            <span class="panel-title-icon"><i class="fa-solid fa-code-branch"></i> 6-Stage Analytical Pipeline</span>
+          </div>
+          <div class="lp-method-grid" style="margin-top: 1rem;">
+            <div class="lp-method-card orange" style="background: var(--bg-body);">
+              <div class="lp-method-icon"><i class="fa-solid fa-database"></i></div>
+              <div class="lp-method-step">Stage 1–2</div>
+              <div class="lp-method-title">Data Collection &amp; Cleaning</div>
+              <div class="lp-method-desc">
+                Ball-by-ball IPL match data from 1,200+ Cricsheet CSV files is parsed and aggregated into player-level career statistics. Inactive players (fewer than 15 balls faced) are filtered, and derived features are computed.
+              </div>
+              <div class="lp-method-tags">
+                <span class="lp-tag">aggregate_data.py</span>
+                <span class="lp-tag">Pandas</span>
+              </div>
+            </div>
 
-          <div class="glass-panel">
-            <div class="panel-title">
-              <span class="panel-title-icon"><i class="fa-solid fa-circle-nodes"></i> ML Final Verdict</span>
-            </div>
-            <div class="hud-verdict">
-              <div class="hud-row">
-                <div class="hud-label">Best ML Model</div>
-                <div class="hud-value orange" id="verdict-best-model">—</div>
+            <div class="lp-method-card green" style="background: var(--bg-body);">
+              <div class="lp-method-icon"><i class="fa-solid fa-scissors"></i></div>
+              <div class="lp-method-step">Stage 3</div>
+              <div class="lp-method-title">Statistical Sampling (n=150)</div>
+              <div class="lp-method-desc">
+                Four independent samples of 150 batsmen each are drawn from the population: <strong>Simple Random</strong>, <strong>Systematic</strong>, <strong>Stratified</strong>, and <strong>Cluster</strong>.
               </div>
-              <div class="hud-row">
-                <div class="hud-label">Best Sampling Method</div>
-                <div class="hud-value green" id="verdict-best-sampling">—</div>
-              </div>
-              <div class="hud-row">
-                <div class="hud-label">Best Sample R²</div>
-                <div class="hud-value font-mono" id="verdict-r2">—</div>
-              </div>
-              <div class="hud-row">
-                <div class="hud-label">RMSE</div>
-                <div class="hud-value font-mono" id="verdict-rmse">—</div>
-              </div>
-              <div class="hud-row">
-                <div class="hud-label">MAE</div>
-                <div class="hud-value font-mono" id="verdict-mae">—</div>
+              <div class="lp-method-tags">
+                <span class="lp-tag">SRS</span>
+                <span class="lp-tag">Systematic</span>
+                <span class="lp-tag">Stratified</span>
+                <span class="lp-tag">Cluster</span>
               </div>
             </div>
-            <div class="verdict-banner">
-              <div class="verdict-header"><i class="fa-solid fa-microchip"></i> System Insight</div>
-              <div class="verdict-desc">
-                Linear Regression achieves R² = 1.0 because the Batting Efficiency Score is an exact linear combination of normalized player statistics. Tree-based models (RF, XGBoost) achieve near-perfect fits (R² > 0.97) across all sampling subsets.
+
+            <div class="lp-method-card blue" style="background: var(--bg-body);">
+              <div class="lp-method-icon"><i class="fa-solid fa-laptop-code"></i></div>
+              <div class="lp-method-step">Stage 4–5</div>
+              <div class="lp-method-title">ML Training &amp; Evaluation</div>
+              <div class="lp-method-desc">
+                Linear Regression, Random Forest, and XGBoost regressors are trained on each of the 5 datasets yielding <strong>15 models</strong>. Evaluated on a common 20% held-out test set.
+              </div>
+              <div class="lp-method-tags">
+                <span class="lp-tag">Linear Regression</span>
+                <span class="lp-tag">Random Forest</span>
+                <span class="lp-tag">XGBoost</span>
+              </div>
+            </div>
+
+            <div class="lp-method-card purple" style="background: var(--bg-body);">
+              <div class="lp-method-icon"><i class="fa-solid fa-seedling"></i></div>
+              <div class="lp-method-step">Stage 6</div>
+              <div class="lp-method-title">SDG Sustainability Reporting</div>
+              <div class="lp-method-desc">
+                Dot balls are converted to trees planted (×19). Results are visualised as interactive charts and a ranked leaderboard, aligned with <strong>UN SDG 13</strong> and <strong>SDG 15</strong>.
+              </div>
+              <div class="lp-method-tags">
+                <span class="lp-tag">SDG 13 &amp; 15</span>
+                <span class="lp-tag">Chart.js</span>
               </div>
             </div>
           </div>
-
-          <div class="glass-panel">
-            <div class="panel-title">
-              <span class="panel-title-icon" style="color: var(--accent-green)"><i class="fa-solid fa-leaf" style="color:var(--accent-green)"></i> Team Sustainability Rankings</span>
-            </div>
-            <div class="table-wrapper" style="max-height: 340px; overflow-y: auto;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Rank</th><th>IPL Team</th><th>Dot Balls</th><th style="color:var(--accent-green)">Trees 🌳</th>
-                  </tr>
-                </thead>
-                <tbody id="sdg-ranking-body">
-                  <tr><td colspan="4" style="text-align:center; color:var(--text-muted)">Loading rankings...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
         </div>
 
         <!-- Mini Charts -->
@@ -308,6 +402,7 @@
               <div class="card-accent"></div>
               <div class="counter-label">Features Computed</div>
               <div class="counter-val" style="font-size: 1.6rem; color: var(--accent-green)">5</div>
+              <div style="font-size:0.68rem; color:var(--text-muted); margin-top:0.3rem; line-height:1.5">Runs · SR · Avg<br>Dot Balls · Trees</div>
             </div>
           </div>
         </div>
@@ -437,6 +532,65 @@
           <div class="page-header-sub">15 models × 5 sampling methods — interactive and static charts</div>
         </div>
 
+        <div class="hero-counters" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 2rem;">
+          <div class="counter-card purple">
+            <div class="card-accent"></div>
+            <div class="counter-card-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div class="counter-label">Avg Efficiency</div>
+            <div class="counter-val" id="hero-avg-efficiency">—</div>
+            <div class="counter-subtext">Weighted score (0–100)</div>
+          </div>
+          <div class="counter-card">
+            <div class="card-accent"></div>
+            <div class="counter-card-icon"><i class="fa-solid fa-filter"></i></div>
+            <div class="counter-label">Best Sampling</div>
+            <div class="counter-val" id="hero-best-sampling" style="font-size:1.25rem">—</div>
+            <div class="counter-subtext">Optimal by avg R²</div>
+          </div>
+          <div class="counter-card gold">
+            <div class="card-accent"></div>
+            <div class="counter-card-icon"><i class="fa-solid fa-gears"></i></div>
+            <div class="counter-label">Best ML Model</div>
+            <div class="counter-val" id="hero-best-model" style="font-size:1.15rem">—</div>
+            <div class="counter-subtext">Highest R² algorithm</div>
+          </div>
+        </div>
+
+        <!-- ML Final Verdict (Moved from Dashboard) -->
+        <div class="glass-panel" style="margin-bottom: 2rem;">
+          <div class="panel-title">
+            <span class="panel-title-icon"><i class="fa-solid fa-circle-nodes"></i> ML Final Verdict</span>
+          </div>
+          <div class="hud-verdict">
+            <div class="hud-row">
+              <div class="hud-label">Best ML Model</div>
+              <div class="hud-value orange" id="verdict-best-model">—</div>
+            </div>
+            <div class="hud-row">
+              <div class="hud-label">Best Sampling Method</div>
+              <div class="hud-value green" id="verdict-best-sampling">—</div>
+            </div>
+            <div class="hud-row">
+              <div class="hud-label">Best Sample R²</div>
+              <div class="hud-value font-mono" id="verdict-r2">—</div>
+            </div>
+            <div class="hud-row">
+              <div class="hud-label">RMSE</div>
+              <div class="hud-value font-mono" id="verdict-rmse">—</div>
+            </div>
+            <div class="hud-row">
+              <div class="hud-label">MAE</div>
+              <div class="hud-value font-mono" id="verdict-mae">—</div>
+            </div>
+          </div>
+          <div class="verdict-banner">
+            <div class="verdict-header"><i class="fa-solid fa-microchip"></i> System Insight</div>
+            <div class="verdict-desc">
+              Linear Regression achieves R² = 1.0 because the Batting Efficiency Score is an exact linear combination of normalized player statistics. Tree-based models (RF, XGBoost) achieve near-perfect fits (R² > 0.97) across all sampling subsets.
+            </div>
+          </div>
+        </div>
+
         <div class="glass-panel">
           <div class="tabs-header">
             <button class="tab-btn viz-tab-btn green-active active" data-target="viz-interactive">
@@ -476,16 +630,46 @@
           <div class="viz-view-content" id="viz-static">
             <p style="margin-bottom:1.25rem">High-resolution charts generated by Matplotlib with dark scientific theme:</p>
             <div class="charts-grid">
-              <div class="chart-wrapper static"><img src="/assets/images/chart1_runs_vs_dot.png" alt="Runs vs Dot Balls"></div>
-              <div class="chart-wrapper static"><img src="/assets/images/chart2_strike_rate_vs_efficiency.png" alt="Strike Rate vs Efficiency"></div>
-              <div class="chart-wrapper static"><img src="/assets/images/chart3_trees_batsman.png" alt="Top Batsmen Trees"></div>
-              <div class="chart-wrapper static"><img src="/assets/images/chart4_trees_team.png" alt="Trees by Team"></div>
-              <div class="chart-wrapper static"><img src="/assets/images/chart5_sampling_r2.png" alt="Sampling vs R²"></div>
-              <div class="chart-wrapper static"><img src="/assets/images/chart6_sampling_rmse.png" alt="Sampling vs RMSE"></div>
-              <div class="chart-wrapper static"><img src="/assets/images/chart7_sampling_mae.png" alt="Sampling vs MAE"></div>
-              <div class="chart-wrapper static"><img src="/assets/images/chart8_model_comparison.png" alt="Model Comparison"></div>
-              <div class="chart-wrapper static"><img src="/assets/images/chart9_pop_vs_sample.png" alt="Pop vs Sample Distributions"></div>
-              <div class="chart-wrapper static"><img src="/assets/images/chart10_final_ranking.png" alt="Final Ranking"></div>
+              <div class="chart-wrapper static">
+                <img src="/assets/images/chart1_runs_vs_dot.png" alt="Runs vs Dot Balls">
+                <div class="chart-caption">Runs vs Dot Balls (Population)</div>
+              </div>
+              <div class="chart-wrapper static">
+                <img src="/assets/images/chart2_strike_rate_vs_efficiency.png" alt="Strike Rate vs Efficiency">
+                <div class="chart-caption">Strike Rate vs Efficiency Score</div>
+              </div>
+              <div class="chart-wrapper static">
+                <img src="/assets/images/chart3_trees_batsman.png" alt="Top Batsmen Trees">
+                <div class="chart-caption">Trees Planted — Top Batsmen</div>
+              </div>
+              <div class="chart-wrapper static">
+                <img src="/assets/images/chart4_trees_team.png" alt="Trees by Team">
+                <div class="chart-caption">Trees Planted by Team</div>
+              </div>
+              <div class="chart-wrapper static">
+                <img src="/assets/images/chart5_sampling_r2.png" alt="Sampling vs R²">
+                <div class="chart-caption">R² Score by Sampling Method</div>
+              </div>
+              <div class="chart-wrapper static">
+                <img src="/assets/images/chart6_sampling_rmse.png" alt="Sampling vs RMSE">
+                <div class="chart-caption">RMSE by Sampling Method</div>
+              </div>
+              <div class="chart-wrapper static">
+                <img src="/assets/images/chart7_sampling_mae.png" alt="Sampling vs MAE">
+                <div class="chart-caption">MAE by Sampling Method</div>
+              </div>
+              <div class="chart-wrapper static">
+                <img src="/assets/images/chart8_model_comparison.png" alt="Model Comparison">
+                <div class="chart-caption">Model Accuracy Comparison (All 15)</div>
+              </div>
+              <div class="chart-wrapper static">
+                <img src="/assets/images/chart9_pop_vs_sample.png" alt="Pop vs Sample Distributions">
+                <div class="chart-caption">Population vs Sample Distributions</div>
+              </div>
+              <div class="chart-wrapper static">
+                <img src="/assets/images/chart10_final_ranking.png" alt="Final Ranking">
+                <div class="chart-caption">Final Player Efficiency Ranking</div>
+              </div>
             </div>
           </div>
 
@@ -532,6 +716,9 @@
               <option value="100">Top 100</option>
               <option value="999">All Players</option>
             </select>
+            <button class="export-csv-btn" id="export-csv-btn" title="Export leaderboard as CSV">
+              <i class="fa-solid fa-file-arrow-down"></i> Export CSV
+            </button>
           </div>
 
           <div class="table-wrapper" style="max-height: 580px; overflow-y: auto;">
@@ -564,11 +751,36 @@
 
         <div class="glass-panel">
           <div class="sdg-header">
-            <div class="sdg-badge-img sdg13">13</div>
-            <div class="sdg-badge-img sdg15">15</div>
+            <div class="sdg-badge-img sdg13">
+              <span class="sdg-num">13</span>
+              <span class="sdg-lbl">Climate<br>Action</span>
+            </div>
+            <div class="sdg-badge-img sdg15">
+              <span class="sdg-num">15</span>
+              <span class="sdg-lbl">Life on<br>Land</span>
+            </div>
             <div class="sdg-heading-text">
               <h2>Green Dot Ball Sustainability Impact</h2>
               <p>Cricket analytics meets environmental preservation. Offsetting carbon footprints, one dot ball at a time.</p>
+            </div>
+          </div>
+
+          <!-- Team Sustainability Rankings Moved Here -->
+          <div class="glass-panel" style="margin: 1.5rem 0; border: 1px solid var(--border-light);">
+            <div class="panel-title">
+              <span class="panel-title-icon" style="color: var(--accent-green)"><i class="fa-solid fa-leaf" style="color:var(--accent-green)"></i> Team Sustainability Rankings</span>
+            </div>
+            <div class="table-wrapper" style="max-height: 340px; overflow-y: auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rank</th><th>IPL Team</th><th>Dot Balls</th><th style="color:var(--accent-green)">Trees 🌳</th>
+                  </tr>
+                </thead>
+                <tbody id="sdg-ranking-body">
+                  <tr><td colspan="4" style="text-align:center; color:var(--text-muted)">Loading rankings...</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -580,6 +792,7 @@
             <div class="sdg-metric-card">
               <div class="sdg-metric-title"><i class="fa-solid fa-calculator"></i> Mean Trees / Batsman-Season</div>
               <div class="sdg-metric-val" id="sdg-avg-trees">—</div>
+              <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.5rem">avg trees per player career segment</div>
             </div>
             <div class="sdg-metric-card">
               <div class="sdg-metric-title"><i class="fa-solid fa-trophy"></i> Top Green Contributor</div>
@@ -612,46 +825,92 @@
            SECTION 8: JUSTIFICATION REPORT
       ══════════════════════════════════ -->
       <section id="justification" class="dashboard-section">
+
+        <!-- Section Header -->
         <div class="page-header">
-          <div class="page-header-title">📄 Methodology Justification Report</div>
-          <div class="page-header-sub">Why Simple Random Sampling & Linear Regression — backed by real experimental results</div>
+          <div class="page-header-title">🔬 Methodology Justification</div>
+          <div class="page-header-sub">Why Simple Random Sampling &amp; Linear Regression outperform all alternatives — backed by experimental evidence</div>
         </div>
 
-        <!-- Quick Summary Cards -->
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-bottom:1.5rem">
-          <div class="glass-panel" style="padding:1.25rem; text-align:center; border-color:var(--border-glow-orange)">
-            <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); margin-bottom:0.5rem">Best Sampling Method</div>
-            <div style="font-size:1.6rem; font-weight:900; color:var(--accent-orange); font-family:var(--font-mono)">SRS</div>
-            <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.3rem">Avg R² = 0.9744 · Best of 4 methods</div>
-          </div>
-          <div class="glass-panel" style="padding:1.25rem; text-align:center; border-color:var(--border-glow-green)">
-            <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); margin-bottom:0.5rem">Best ML Model</div>
-            <div style="font-size:1.4rem; font-weight:900; color:var(--accent-green); font-family:var(--font-mono)">Lin. Reg.</div>
-            <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.3rem">R² = 1.000000 · MAE = 0.000029</div>
-          </div>
-          <div class="glass-panel" style="padding:1.25rem; text-align:center; border-color:rgba(64,196,255,0.2)">
-            <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); margin-bottom:0.5rem">Models Evaluated</div>
-            <div style="font-size:1.6rem; font-weight:900; color:var(--accent-blue); font-family:var(--font-mono)">15</div>
-            <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.3rem">3 algorithms × 5 datasets</div>
+        <!-- Verdict Banner -->
+        <div class="just-verdict-banner">
+          <div class="just-verdict-inner">
+            <div class="just-verdict-icon"><i class="fa-solid fa-trophy"></i></div>
+            <div class="just-verdict-text">
+              <div class="just-verdict-headline">Experimental Verdict</div>
+              <div class="just-verdict-sub">After training 15 models across 5 datasets — SRS + Linear Regression wins on every metric</div>
+            </div>
           </div>
         </div>
 
-        <div class="glass-panel">
-          <div class="panel-title">
-            <span class="panel-title-icon"><i class="fa-solid fa-file-lines"></i> Full Justification Report</span>
-            <a href="/api/justification" download="JUSTIFICATION_REPORT.md"
-               style="display:inline-flex; align-items:center; gap:0.4rem; background:var(--accent-orange-dim); border:1px solid var(--border-glow-orange); color:var(--accent-orange); padding:0.4rem 0.9rem; border-radius:6px; font-size:0.8rem; font-weight:600; text-decoration:none; transition:var(--ease)">
-              <i class="fa-solid fa-download"></i> Download .md
+        <!-- Key Results Cards -->
+        <div class="just-cards-grid">
+
+          <div class="just-card orange">
+            <div class="just-card-top">
+              <div class="just-card-icon"><i class="fa-solid fa-filter"></i></div>
+              <div class="just-card-label">Best Sampling Method</div>
+            </div>
+            <div class="just-card-val">SRS</div>
+            <div class="just-card-full">Simple Random Sampling</div>
+            <div class="just-card-meta">
+              <span class="just-meta-pill orange">Avg R² = 0.9744</span>
+              <span class="just-meta-pill orange">Best of 4 Methods</span>
+            </div>
+            <div class="just-card-reason">Random selection ensures unbiased representation across all IPL teams — avoids systematic bias inherent in cluster and systematic sampling methods.</div>
+          </div>
+
+          <div class="just-card green">
+            <div class="just-card-top">
+              <div class="just-card-icon"><i class="fa-solid fa-robot"></i></div>
+              <div class="just-card-label">Best ML Model</div>
+            </div>
+            <div class="just-card-val">Lin. Reg.</div>
+            <div class="just-card-full">Linear Regression</div>
+            <div class="just-card-meta">
+              <span class="just-meta-pill green">R² = 1.000000</span>
+              <span class="just-meta-pill green">MAE = 0.000029</span>
+            </div>
+            <div class="just-card-reason">Efficiency Score is an exact linear combination of normalized features — Linear Regression finds the precise coefficients and achieves a perfect fit.</div>
+          </div>
+
+          <div class="just-card blue">
+            <div class="just-card-top">
+              <div class="just-card-icon"><i class="fa-solid fa-vials"></i></div>
+              <div class="just-card-label">Models Evaluated</div>
+            </div>
+            <div class="just-card-val">15</div>
+            <div class="just-card-full">Across All Datasets</div>
+            <div class="just-card-meta">
+              <span class="just-meta-pill blue">3 Algorithms</span>
+              <span class="just-meta-pill blue">5 Datasets</span>
+            </div>
+            <div class="just-card-reason">LR, RF &amp; XGBoost trained on Full Population, SRS, Systematic, Stratified, and Cluster samples — each evaluated on the same held-out test set.</div>
+          </div>
+
+        </div>
+
+        <!-- Full Report Panel -->
+        <div class="glass-panel just-report-panel">
+          <div class="just-report-header">
+            <div class="just-report-title">
+              <i class="fa-solid fa-scroll"></i>
+              Full Justification Report
+            </div>
+            <a href="/api/justification" download="JUSTIFICATION_REPORT.md" class="just-download-btn">
+              <i class="fa-solid fa-download"></i> Download Report
             </a>
           </div>
-          <div id="justification-content" style="max-height:700px; overflow-y:auto; padding-right:0.5rem">
-            <div style="text-align:center; padding:3rem; color:var(--text-muted)">
-              <i class="fa-solid fa-file-lines" style="font-size:2rem; margin-bottom:1rem; display:block"></i>
+          <div id="justification-content" class="just-report-content">
+            <div class="just-loading">
+              <i class="fa-solid fa-file-lines"></i>
               Loading justification report...
             </div>
           </div>
         </div>
+
       </section>
+
 
     </main>
 
