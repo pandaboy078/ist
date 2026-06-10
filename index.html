@@ -61,7 +61,7 @@
       <div class="lp-metric-sub">Cricsheet 2008–2025</div>
     </div>
     <div class="lp-metric">
-      <div class="lp-metric-val gold">15</div>
+      <div class="lp-metric-val gold">3</div>
       <div class="lp-metric-label">ML Models</div>
       <div class="lp-metric-sub">3 algorithms × 5 datasets</div>
     </div>
@@ -212,7 +212,7 @@
         <!-- The Research Intro -->
         <div class="glass-panel" style="margin-bottom: 2rem;">
           <h2 class="lp-section-title" style="font-size:1.6rem; margin-bottom:1.5rem; text-align:left;">Statistical Inference in Cricket Analytics</h2>
-          <div class="lp-about-grid" style="margin:0; text-align:left;">
+          <div style="margin:0; text-align:left;">
             <div class="lp-about-text">
               <p>
                 This project analyses real ball-by-ball IPL data from <strong>Cricsheet</strong> (2008–2025)
@@ -222,7 +222,7 @@
               <p>
                 Three regression algorithms — <strong>Linear Regression</strong>, <strong>Random Forest</strong>,
                 and <strong>XGBoost</strong> — are trained independently on each sampled subset and on
-                the full population, yielding 15 unique model instances that are evaluated on a common
+                the full population, yielding 3 distinct models that are evaluated on a common
                 gold-standard held-out test set.
               </p>
               <p>
@@ -230,21 +230,6 @@
                 the <strong>Green Dot Ball Sustainability Initiative</strong>, aligning this cricket analytics
                 study with <strong>UN SDG 13</strong> (Climate Action) and <strong>SDG 15</strong> (Life on Land).
               </p>
-            </div>
-            <div>
-              <div class="lp-formula-box">
-                <h4><i class="fa-solid fa-bolt"></i>&nbsp; Batting Efficiency Score Formula</h4>
-                <div class="lp-formula">
-                  Score =<br>
-                  &nbsp;&nbsp;0.40 &times; Norm(Runs)<br>
-                  + 0.30 &times; Norm(Strike Rate)<br>
-                  + 0.20 &times; Norm(Batting Avg)<br>
-                  + 0.10 &times; Norm(Trees Planted)
-                </div>
-                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0">
-                  Min-Max normalization applied per feature across the full population before computing the weighted score.
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -262,14 +247,14 @@
             <div class="counter-card-icon"><i class="fa-solid fa-vial"></i></div>
             <div class="counter-label">Sample Size (n)</div>
             <div class="counter-val" id="hero-sample-size">150</div>
-            <div class="counter-subtext">SRS · Systematic · Stratified</div>
+            <div class="counter-subtext">SRS · Systematic · Stratified · Cluster</div>
           </div>
-          <div class="counter-card green">
+          <div class="counter-card gold">
             <div class="card-accent"></div>
-            <div class="counter-card-icon"><i class="fa-solid fa-tree"></i></div>
-            <div class="counter-label">Trees Planted 🌳</div>
-            <div class="counter-val" id="hero-trees">—</div>
-            <div class="counter-subtext">Dot Balls × 19</div>
+            <div class="counter-card-icon"><i class="fa-solid fa-robot"></i></div>
+            <div class="counter-label">Models Used</div>
+            <div class="counter-val" id="hero-models">3</div>
+            <div class="counter-subtext">LR · RF · XGBoost</div>
           </div>
         </div>
 
@@ -312,7 +297,7 @@
               <div class="lp-method-step">Stage 4–5</div>
               <div class="lp-method-title">ML Training &amp; Evaluation</div>
               <div class="lp-method-desc">
-                Linear Regression, Random Forest, and XGBoost regressors are trained on each of the 5 datasets yielding <strong>15 models</strong>. Evaluated on a common 20% held-out test set.
+                Linear Regression, Random Forest, and XGBoost regressors are trained on each of the 5 datasets evaluating <strong>3 models</strong>. Evaluated on a common 20% held-out test set.
               </div>
               <div class="lp-method-tags">
                 <span class="lp-tag">Linear Regression</span>
@@ -336,15 +321,23 @@
           </div>
         </div>
 
-        <!-- Mini Charts -->
-        <div class="grid-2">
-          <div class="glass-panel">
-            <div class="panel-title"><span class="panel-title-icon"><i class="fa-solid fa-chart-simple"></i> Model Accuracy Comparison</span></div>
-            <div style="height: 240px"><canvas id="chart-model-accuracy"></canvas></div>
-          </div>
-          <div class="glass-panel">
-            <div class="panel-title"><span class="panel-title-icon" style="color:var(--accent-green)"><i class="fa-solid fa-tree" style="color:var(--accent-green)"></i> Mean Trees by Sampling Method</span></div>
-            <div style="height: 240px"><canvas id="chart-mean-trees"></canvas></div>
+        <!-- Formula Box Moved from Above -->
+        <div class="glass-panel" style="margin-bottom: 2rem;">
+          <div class="panel-title"><span class="panel-title-icon"><i class="fa-solid fa-calculator"></i> Efficiency Metric Formulation</span></div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1rem;">
+            <div class="lp-formula-box" style="margin: 0;">
+              <h4><i class="fa-solid fa-bolt"></i>&nbsp; Batting Efficiency Score Formula</h4>
+              <div class="lp-formula">
+                Score =<br>
+                &nbsp;&nbsp;0.40 &times; Norm(Runs)<br>
+                + 0.30 &times; Norm(Strike Rate)<br>
+                + 0.20 &times; Norm(Batting Avg)<br>
+                + 0.10 &times; Norm(Trees Planted)
+              </div>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0">
+                Min-Max normalization applied per feature across the full population before computing the weighted score.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -442,15 +435,15 @@
             <div class="step completed">
               <div class="step-number"><i class="fa-solid fa-laptop-code"></i></div>
               <div class="step-content">
-                <div class="step-title">4. ML Model Training (15 Models)</div>
-                <div class="step-desc">Linear Regression, Random Forest, and XGBoost regressors are trained separately on each of the five datasets (Full Population + 4 samples), yielding 15 unique model instances saved as <code>.joblib</code> files.</div>
+                <div class="step-title">4. ML Model Training (3 Models)</div>
+                <div class="step-desc">Linear Regression, Random Forest, and XGBoost regressors are trained separately on each of the five datasets (Full Population + 4 samples), yielding 3 distinct model architectures saved as <code>.joblib</code> files.</div>
               </div>
             </div>
             <div class="step completed">
               <div class="step-number"><i class="fa-solid fa-gauge-high"></i></div>
               <div class="step-content">
                 <div class="step-title">5. Gold-Standard Evaluation</div>
-                <div class="step-desc">All 15 models are evaluated on the same 20% held-out test population. R², RMSE, and MAE are computed and exported to <code>results.json</code> and <code>results_table.csv</code>.</div>
+                <div class="step-desc">All 3 models are evaluated on the same 20% held-out test population. R², RMSE, and MAE are computed and exported to <code>results.json</code> and <code>results_table.csv</code>.</div>
               </div>
             </div>
             <div class="step active">
@@ -503,13 +496,13 @@
           </div>
           <div class="code-viewer-content" id="code-training">
             <div class="highlight-box green" style="margin-bottom: 1rem">
-              <p><strong>model_training.py</strong> — 80/20 split, then trains Linear Regression, Random Forest, and XGBoost on all 5 datasets = 15 saved models.</p>
+              <p><strong>model_training.py</strong> — 80/20 split, then trains Linear Regression, Random Forest, and XGBoost on all 5 datasets using 3 core models.</p>
             </div>
             <pre class="code-viewer" id="code-training-pre">Loading source code…</pre>
           </div>
           <div class="code-viewer-content" id="code-evaluation">
             <div class="highlight-box green" style="margin-bottom: 1rem">
-              <p><strong>evaluation.py</strong> — Evaluates all 15 models on the gold-standard test set. Exports R², MAE, RMSE to <code>results.json</code>.</p>
+              <p><strong>evaluation.py</strong> — Evaluates all 3 models on the gold-standard test set. Exports R², MAE, RMSE to <code>results.json</code>.</p>
             </div>
             <pre class="code-viewer" id="code-evaluation-pre">Loading source code…</pre>
           </div>
@@ -528,7 +521,7 @@
       <section id="results" class="dashboard-section">
         <div class="page-header">
           <div class="page-header-title">📈 Results & Visualizations</div>
-          <div class="page-header-sub">15 models × 5 sampling methods — interactive and static charts</div>
+          <div class="page-header-sub">3 models × 5 sampling methods — interactive and static charts</div>
         </div>
 
         <div class="hero-counters" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 2rem;">
@@ -659,7 +652,7 @@
               </div>
               <div class="chart-wrapper static">
                 <img src="/assets/images/chart8_model_comparison.png" alt="Model Comparison">
-                <div class="chart-caption">Model Accuracy Comparison (All 15)</div>
+                <div class="chart-caption">Model Accuracy Comparison (All 3)</div>
               </div>
               <div class="chart-wrapper static">
                 <img src="/assets/images/chart9_pop_vs_sample.png" alt="Pop vs Sample Distributions">
@@ -837,7 +830,7 @@
             <div class="just-verdict-icon"><i class="fa-solid fa-trophy"></i></div>
             <div class="just-verdict-text">
               <div class="just-verdict-headline">Experimental Verdict</div>
-              <div class="just-verdict-sub">After training 15 models across 5 datasets — SRS + Linear Regression wins on every metric</div>
+              <div class="just-verdict-sub">After training 3 models across 5 datasets — SRS + Linear Regression wins on every metric</div>
             </div>
           </div>
         </div>
@@ -878,7 +871,7 @@
               <div class="just-card-icon"><i class="fa-solid fa-vials"></i></div>
               <div class="just-card-label">Models Evaluated</div>
             </div>
-            <div class="just-card-val">15</div>
+            <div class="just-card-val">3</div>
             <div class="just-card-full">Across All Datasets</div>
             <div class="just-card-meta">
               <span class="just-meta-pill blue">3 Algorithms</span>
