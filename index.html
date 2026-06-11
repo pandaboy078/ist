@@ -600,6 +600,10 @@
           <div class="viz-view-content active" id="viz-interactive">
             <div class="charts-grid">
               <div class="chart-wrapper">
+                <div style="font-size:0.85rem; font-weight:600; margin-bottom:0.75rem; color:var(--text-secondary)">Model Accuracy (Avg R²)</div>
+                <div style="height: 270px"><canvas id="chart-model-accuracy"></canvas></div>
+              </div>
+              <div class="chart-wrapper">
                 <div style="font-size:0.85rem; font-weight:600; margin-bottom:0.75rem; color:var(--text-secondary)">Model R² Across Sampling Methods</div>
                 <div style="height: 270px"><canvas id="chart-r2-comparison"></canvas></div>
               </div>
@@ -610,6 +614,10 @@
               <div class="chart-wrapper">
                 <div style="font-size:0.85rem; font-weight:600; margin-bottom:0.75rem; color:var(--text-secondary)">MAE Across Sampling Methods</div>
                 <div style="height: 270px"><canvas id="chart-mae-comparison"></canvas></div>
+              </div>
+              <div class="chart-wrapper">
+                <div style="font-size:0.85rem; font-weight:600; margin-bottom:0.75rem; color:var(--text-secondary)">Mean Trees per Batsman-Season</div>
+                <div style="height: 270px"><canvas id="chart-mean-trees"></canvas></div>
               </div>
               <div class="chart-wrapper">
                 <div style="font-size:0.85rem; font-weight:600; margin-bottom:0.75rem; color:var(--text-secondary)">Mean Efficiency Score by Sampling</div>
