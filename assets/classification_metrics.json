@@ -1,0 +1,33 @@
+{
+    "Logistic Regression": {
+        "Accuracy": 1.0,
+        "Precision": 1.0,
+        "Recall": 1.0,
+        "F1 Score": 1.0,
+        "ROC-AUC": 1.0,
+        "MSE": 0.0,
+        "RMSE": 0.0,
+        "R2 Score": 1.0
+    },
+    "Decision Tree": {
+        "Accuracy": 0.9649122807017544,
+        "Precision": 0.9090909090909091,
+        "Recall": 0.9090909090909091,
+        "F1 Score": 0.9090909090909091,
+        "ROC-AUC": 0.9535573122529645,
+        "MSE": 0.03508771929824561,
+        "RMSE": 0.1873171623163388,
+        "R2 Score": 0.774703557312253
+    },
+    "Random Forest": {
+        "Accuracy": 0.9736842105263158,
+        "Precision": 1.0,
+        "Recall": 0.8636363636363636,
+        "F1 Score": 0.926829268292683,
+        "ROC-AUC": 0.9995059288537549,
+        "MSE": 0.02631578947368421,
+        "RMSE": 0.16222142113076254,
+        "R2 Score": 0.8310276679841897
+    },
+    "Best_Model": "Logistic Regression"
+}

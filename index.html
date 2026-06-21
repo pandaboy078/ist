@@ -141,8 +141,20 @@
       </button>
 
       <div class="nav-section-label">ANALYSIS</div>
+      <button class="nav-item" data-section="ai-analyzer">
+        <i class="fa-solid fa-robot"></i> AI Player Analyzer
+      </button>
+      <button class="nav-item" data-section="player-comparison">
+        <i class="fa-solid fa-code-compare"></i> Player Comparison
+      </button>
       <button class="nav-item" data-section="results">
         <i class="fa-solid fa-square-poll-vertical"></i> Results & Charts
+      </button>
+      <button class="nav-item" data-section="ml-classification">
+        <i class="fa-solid fa-brain"></i> Base ML Models
+      </button>
+      <button class="nav-item" data-section="ml-evaluation">
+        <i class="fa-solid fa-microchip"></i> Advanced ML Evaluation
       </button>
       <button class="nav-item" data-section="leaderboard">
         <i class="fa-solid fa-ranking-star"></i> Leaderboard
@@ -693,6 +705,461 @@
       </section>
 
       <!-- ══════════════════════════════════
+           SECTION: AI PLAYER ANALYZER
+      ══════════════════════════════════ -->
+      <section id="ai-analyzer" class="dashboard-section">
+        <div class="page-header">
+          <div class="page-header-title">🤖 IPL AI Player Analyzer</div>
+          <div class="page-header-sub">Advanced Machine Learning Scouting Platform using Random Forest, K-Means, and KNN</div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="glass-panel" style="margin-bottom: 2rem;">
+          <div class="panel-title">
+            <span class="panel-title-icon"><i class="fa-solid fa-magnifying-glass"></i> Select Player</span>
+          </div>
+          <div style="padding: 1rem;">
+            <select id="ai-player-select" style="width: 100%; padding: 1rem; border-radius: 8px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-glow); color: #fff; font-size: 1.1rem;">
+              <option value="">Loading Players...</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="ai-loading" style="display: none; text-align: center; padding: 4rem;">
+          <i class="fa-solid fa-spinner fa-spin" style="font-size: 3rem; color: var(--primary);"></i>
+          <h3 style="margin-top: 1rem; color: var(--text-muted);">Generating AI Report...</h3>
+        </div>
+
+        <!-- AI Output Content -->
+        <div id="ai-content" style="display: none;">
+          
+          <!-- Premium Player Profile Card -->
+          <div class="glass-panel" style="margin-bottom: 2rem; display: flex; align-items: center; gap: 2rem; padding: 2rem;">
+            <div style="flex-shrink: 0; position: relative;">
+              <div id="ai-photo-loader" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.5); border-radius: 50%; display: none;">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+              </div>
+              <img id="ai-player-photo" src="" alt="Player Photo" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); box-shadow: 0 0 20px rgba(227, 180, 50, 0.4);">
+            </div>
+            <div style="flex-grow: 1;">
+              <h2 id="ai-name" style="font-size: 3rem; color: var(--primary); margin-bottom: 0.5rem; margin-top: 0;">Player Name</h2>
+              <div style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                <i class="fa-solid fa-medal"></i> <span id="ai-profile-team">Professional IPL Cricketer</span>
+              </div>
+              <div class="hero-counters" style="grid-template-columns: repeat(5, 1fr);">
+                <div class="counter-card"><div class="counter-label">Matches</div><div class="counter-val" id="ai-matches">—</div></div>
+                <div class="counter-card"><div class="counter-label">Runs</div><div class="counter-val" id="ai-runs">—</div></div>
+                <div class="counter-card"><div class="counter-label">Average</div><div class="counter-val" id="ai-avg">—</div></div>
+                <div class="counter-card"><div class="counter-label">Strike Rate</div><div class="counter-val" id="ai-sr">—</div></div>
+                <div class="counter-card"><div class="counter-label">Highest Score</div><div class="counter-val" id="ai-hs">—</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <!-- Verdict Section -->
+            <div class="glass-panel" style="border-color: var(--primary);">
+              <div class="panel-title">
+                <span class="panel-title-icon" style="color:var(--primary)"><i class="fa-solid fa-gavel"></i> Final AI Verdict</span>
+              </div>
+              <div style="padding: 1rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+                  <span style="color: var(--text-muted); font-size: 1.2rem;">Efficiency Score</span>
+                  <span id="ai-eff" style="font-weight: bold; font-size: 1.2rem; color: #fff;">—</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+                  <span style="color: var(--text-muted); font-size: 1.2rem;">Classification</span>
+                  <span id="ai-pred" style="font-weight: bold; font-size: 1.2rem; color: var(--primary);">—</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+                  <span style="color: var(--text-muted); font-size: 1.2rem;">AI Confidence</span>
+                  <span id="ai-conf" style="font-weight: bold; font-size: 1.2rem; color: var(--accent-green);">—</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+                  <span style="color: var(--text-muted); font-size: 1.2rem;">K-Means Cluster</span>
+                  <span id="ai-cluster" style="font-weight: bold; font-size: 1.2rem; color: #e3b432;">—</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-muted); font-size: 1.2rem;">Future Potential</span>
+                  <span id="ai-future" style="font-weight: bold; font-size: 1.2rem; color: #a855f7;">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Explainable AI & Insights -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+              <div class="glass-panel">
+                <div class="panel-title">
+                  <span class="panel-title-icon"><i class="fa-solid fa-lightbulb"></i> AI Insights Engine</span>
+                </div>
+                <div style="padding: 1rem;">
+                  <p id="ai-insight" style="font-size: 1.1rem; line-height: 1.6; color: #fff;">—</p>
+                </div>
+              </div>
+
+              <div class="glass-panel">
+                <div class="panel-title">
+                  <span class="panel-title-icon"><i class="fa-solid fa-users-viewfinder"></i> KNN Similar Players</span>
+                </div>
+                <div style="padding: 1rem;">
+                  <ul id="ai-similar-list" style="list-style: none; padding: 0; margin: 0; line-height: 2;">
+                    <li>Loading similarities...</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature Importance Chart -->
+          <div class="glass-panel" style="margin-top: 2rem;">
+            <div class="panel-title">
+              <span class="panel-title-icon"><i class="fa-solid fa-chart-bar"></i> Explainable AI: Feature Importance</span>
+            </div>
+            <div style="height: 300px; padding: 1rem;">
+              <canvas id="ai-feature-chart"></canvas>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════
+           SECTION: PLAYER COMPARISON
+      ══════════════════════════════════ -->
+      <section id="player-comparison" class="dashboard-section">
+        <div class="page-header">
+          <div class="page-header-title">⚔️ Player Comparison Mode</div>
+          <div class="page-header-sub">Head-to-head analysis using normalized statistics</div>
+        </div>
+
+        <div class="glass-panel" style="margin-bottom: 2rem;">
+          <div class="grid-2" style="align-items: center;">
+            <select id="comp-p1-select" style="padding: 1rem; border-radius: 8px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-glow); color: #fff; font-size: 1.1rem;">
+              <option value="">Loading...</option>
+            </select>
+            <select id="comp-p2-select" style="padding: 1rem; border-radius: 8px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-glow); color: #fff; font-size: 1.1rem;">
+              <option value="">Loading...</option>
+            </select>
+          </div>
+          <div style="text-align: center; margin-top: 1rem;">
+            <button id="comp-btn" style="padding: 1rem 3rem; font-size: 1.2rem; background: #e3b432; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(227, 180, 50, 0.4); text-transform: uppercase; transition: transform 0.2s ease;">Compare Players</button>
+          </div>
+        </div>
+
+        <div id="comp-loading" style="display: none; text-align: center; margin: 4rem 0;">
+          <i class="fa-solid fa-spinner fa-spin" style="font-size: 3rem; color: #e3b432;"></i>
+          <h3 style="margin-top: 1rem; color: var(--text-muted);">Generating Head-to-Head AI Comparison...</h3>
+        </div>
+
+        <div id="comp-results-container" style="display: none; flex-direction: column; gap: 2rem;">
+          
+          <!-- SECTION 1: PLAYER VS PLAYER HEADER -->
+          <div class="grid-2" style="gap: 2rem;">
+            <!-- P1 Card -->
+            <div class="glass-panel" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2rem; border-color: rgba(54, 162, 235, 0.5);">
+              <img id="comp-p1-img" src="" alt="P1 Photo" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(54, 162, 235, 1); margin-bottom: 1rem;">
+              <h2 id="comp-p1-name" style="color: #fff; font-size: 2rem; margin-bottom: 0.5rem;">Player 1</h2>
+              <div style="color: var(--text-muted); margin-bottom: 1.5rem;"><i class="fa-solid fa-medal"></i> <span id="comp-p1-pred">Prediction</span></div>
+              <div style="font-size: 1.2rem; background: rgba(54, 162, 235, 0.2); padding: 0.5rem 1rem; border-radius: 8px; color: rgba(54, 162, 235, 1); font-weight: bold;">
+                Efficiency: <span id="comp-p1-eff">—</span>
+              </div>
+            </div>
+            
+            <!-- P2 Card -->
+            <div class="glass-panel" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2rem; border-color: rgba(255, 99, 132, 0.5);">
+              <img id="comp-p2-img" src="" alt="P2 Photo" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255, 99, 132, 1); margin-bottom: 1rem;">
+              <h2 id="comp-p2-name" style="color: #fff; font-size: 2rem; margin-bottom: 0.5rem;">Player 2</h2>
+              <div style="color: var(--text-muted); margin-bottom: 1.5rem;"><i class="fa-solid fa-medal"></i> <span id="comp-p2-pred">Prediction</span></div>
+              <div style="font-size: 1.2rem; background: rgba(255, 99, 132, 0.2); padding: 0.5rem 1rem; border-radius: 8px; color: rgba(255, 99, 132, 1); font-weight: bold;">
+                Efficiency: <span id="comp-p2-eff">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2: HEAD TO HEAD WINNER PANEL -->
+          <div class="glass-panel" style="border-color: #e3b432; box-shadow: 0 0 20px rgba(227, 180, 50, 0.1);">
+            <div class="panel-title" style="justify-content: center;">
+              <span class="panel-title-icon" style="color: #e3b432;"><i class="fa-solid fa-trophy"></i> AI COMPARISON RESULT</span>
+            </div>
+            <div style="padding: 2rem; text-align: center;">
+              <h3 style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 0.5rem;">Winner</h3>
+              <h1 id="comp-winner-name" style="font-size: 3rem; color: #fff; margin-bottom: 1.5rem;">—</h1>
+              
+              <div class="grid-3" style="gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">
+                  <div style="color: var(--text-muted); margin-bottom: 0.5rem;">Winning Margin</div>
+                  <div id="comp-winner-margin" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-green);">—</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">
+                  <div style="color: var(--text-muted); margin-bottom: 0.5rem;">AI Confidence</div>
+                  <div id="comp-winner-conf" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-blue);">—</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">
+                  <div style="color: var(--text-muted); margin-bottom: 0.5rem;">Key Reason</div>
+                  <div id="comp-winner-reason" style="font-size: 1.1rem; font-weight: bold; color: #fff;">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 3: LARGE RADAR CHART -->
+          <div class="glass-panel">
+            <div class="panel-title" style="justify-content: center;">
+              <span class="panel-title-icon"><i class="fa-solid fa-spider"></i> Statistical Radar Comparison</span>
+            </div>
+            <div style="height: 600px; padding: 2rem; display: flex; justify-content: center;">
+              <canvas id="comp-radar-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- SECTION 4: ADVANCED ML COMPARISON -->
+          <div class="grid-2" style="gap: 2rem;">
+            <div class="glass-panel">
+              <div class="panel-title"><span class="panel-title-icon"><i class="fa-solid fa-microchip"></i> P1: ML Breakdown</span></div>
+              <div style="padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+                  <span style="color: var(--text-muted);">Model Confidence</span>
+                  <span id="comp-p1-conf" style="font-weight: bold; color: rgba(54, 162, 235, 1);">—</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-muted);">Matches Played</span>
+                  <span id="comp-p1-matches" style="font-weight: bold; color: #fff;">—</span>
+                </div>
+              </div>
+            </div>
+            <div class="glass-panel">
+              <div class="panel-title"><span class="panel-title-icon"><i class="fa-solid fa-microchip"></i> P2: ML Breakdown</span></div>
+              <div style="padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+                  <span style="color: var(--text-muted);">Model Confidence</span>
+                  <span id="comp-p2-conf" style="font-weight: bold; color: rgba(255, 99, 132, 1);">—</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-muted);">Matches Played</span>
+                  <span id="comp-p2-matches" style="font-weight: bold; color: #fff;">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 5: FEATURE IMPORTANCE & SECTION 8: AI INSIGHTS ENGINE -->
+          <div class="grid-2" style="gap: 2rem;">
+            <div class="glass-panel">
+              <div class="panel-title"><span class="panel-title-icon"><i class="fa-solid fa-chart-bar"></i> Feature Importance Drivers</span></div>
+              <div style="padding: 1.5rem;" id="comp-feature-importance-list">
+                <!-- Dynamically generated bars -->
+              </div>
+            </div>
+            <div class="glass-panel">
+              <div class="panel-title"><span class="panel-title-icon"><i class="fa-solid fa-lightbulb"></i> AI Insights Engine</span></div>
+              <div style="padding: 1.5rem;">
+                <ul style="list-style-type: none; padding: 0; margin: 0; line-height: 2;" id="comp-insights-list">
+                  <!-- Dynamically generated insights -->
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 6: SIMILAR PLAYER RECOMMENDATIONS -->
+          <div class="glass-panel">
+            <div class="panel-title"><span class="panel-title-icon"><i class="fa-solid fa-users"></i> KNN Similar Players</span></div>
+            <div class="grid-2" style="padding: 1.5rem; gap: 2rem;">
+              <div>
+                <h4 style="color: rgba(54, 162, 235, 1); margin-bottom: 1rem;">Similar to Player 1</h4>
+                <ul id="comp-p1-similar" style="list-style: none; padding: 0; line-height: 1.8;"></ul>
+              </div>
+              <div>
+                <h4 style="color: rgba(255, 99, 132, 1); margin-bottom: 1rem;">Similar to Player 2</h4>
+                <ul id="comp-p2-similar" style="list-style: none; padding: 0; line-height: 1.8;"></ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 7: CLUSTER ANALYSIS & SECTION 9: FUTURE POTENTIAL -->
+          <div class="grid-2" style="gap: 2rem;">
+            <div class="glass-panel">
+              <div class="panel-title"><span class="panel-title-icon"><i class="fa-solid fa-project-diagram"></i> Cluster Analysis</span></div>
+              <div style="padding: 2rem; text-align: center;">
+                <div style="margin-bottom: 2rem;">
+                  <div style="color: var(--text-muted); margin-bottom: 0.5rem;">Player 1 Cluster</div>
+                  <div id="comp-p1-cluster" style="display: inline-block; background: rgba(54, 162, 235, 0.2); color: rgba(54, 162, 235, 1); padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold;">—</div>
+                </div>
+                <div>
+                  <div style="color: var(--text-muted); margin-bottom: 0.5rem;">Player 2 Cluster</div>
+                  <div id="comp-p2-cluster" style="display: inline-block; background: rgba(255, 99, 132, 0.2); color: rgba(255, 99, 132, 1); padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold;">—</div>
+                </div>
+              </div>
+            </div>
+            <div class="glass-panel">
+              <div class="panel-title"><span class="panel-title-icon"><i class="fa-solid fa-rocket"></i> Future Potential</span></div>
+              <div class="grid-2" style="padding: 2rem; text-align: center; gap: 1rem;">
+                <div>
+                  <div id="comp-p1-pot-score" style="font-size: 3rem; font-weight: bold; color: rgba(54, 162, 235, 1);">—</div>
+                  <div style="color: var(--text-muted); margin-bottom: 0.5rem;">/ 100</div>
+                  <div id="comp-p1-pot-text" style="font-weight: bold; color: #fff;">—</div>
+                </div>
+                <div>
+                  <div id="comp-p2-pot-score" style="font-size: 3rem; font-weight: bold; color: rgba(255, 99, 132, 1);">—</div>
+                  <div style="color: var(--text-muted); margin-bottom: 0.5rem;">/ 100</div>
+                  <div id="comp-p2-pot-text" style="font-weight: bold; color: #fff;">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 10: PREMIUM FINAL VERDICT -->
+          <div class="glass-panel" style="background: linear-gradient(135deg, rgba(227, 180, 50, 0.1) 0%, rgba(0, 0, 0, 0) 100%); border-left: 5px solid #e3b432;">
+            <div class="panel-title"><span class="panel-title-icon" style="color: #e3b432;"><i class="fa-solid fa-file-contract"></i> FINAL AI SCOUTING REPORT</span></div>
+            <div style="padding: 2rem;">
+              <p id="comp-final-report-text" style="font-size: 1.2rem; line-height: 1.8; color: #fff;">
+                —
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════
+           SECTION: ADVANCED ML EVALUATION
+      ══════════════════════════════════ -->
+      <section id="ml-evaluation" class="dashboard-section">
+        <div class="page-header">
+          <div class="page-header-title">🔬 Advanced Model Evaluation Center</div>
+          <div class="page-header-sub">GridSearchCV Tuning, 5-Fold Cross Validation, and Overfitting Analysis</div>
+        </div>
+
+        <div class="grid-3">
+          <!-- Cross Validation -->
+          <div class="glass-panel">
+            <div class="panel-title">
+              <span class="panel-title-icon"><i class="fa-solid fa-layer-group"></i> 5-Fold Cross Validation</span>
+            </div>
+            <div style="padding: 1rem;">
+              <ul id="eval-cv" style="list-style: none; padding: 0; line-height: 2; font-size: 1.1rem;">
+                <li>Loading CV scores...</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Hyperparameter Tuning -->
+          <div class="glass-panel">
+            <div class="panel-title">
+              <span class="panel-title-icon"><i class="fa-solid fa-sliders"></i> Hyperparameter Tuning</span>
+            </div>
+            <div style="padding: 1rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span style="color:var(--text-muted)">Before Tuning</span> <span id="eval-tune-before" style="font-weight:bold">—</span></div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span style="color:var(--text-muted)">After Tuning</span> <span id="eval-tune-after" style="font-weight:bold; color:var(--primary)">—</span></div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="color:var(--text-muted)">Improvement</span> <span id="eval-tune-imp" style="font-weight:bold; color:var(--accent-green)">—</span></div>
+              <div style="color:var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Best Parameters (GridSearchCV)</div>
+              <pre id="eval-tune-params" style="background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 4px; font-size: 0.9rem;">—</pre>
+            </div>
+          </div>
+
+          <!-- Overfitting Analysis -->
+          <div class="glass-panel">
+            <div class="panel-title">
+              <span class="panel-title-icon"><i class="fa-solid fa-scale-balanced"></i> Overfitting Analysis</span>
+            </div>
+            <div style="padding: 1rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span style="color:var(--text-muted)">Training Accuracy</span> <span id="eval-over-train" style="font-weight:bold">—</span></div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span style="color:var(--text-muted)">Testing Accuracy</span> <span id="eval-over-test" style="font-weight:bold">—</span></div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="color:var(--text-muted)">Difference</span> <span id="eval-over-diff" style="font-weight:bold">—</span></div>
+              <div style="font-weight: bold; font-size: 1.1rem; text-align: center; color: #a855f7;" id="eval-over-conc">—</div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="ml-classification" class="dashboard-section">
+        <div class="page-header">
+          <div class="page-header-title">🧠 ML Performance Evaluation</div>
+          <div class="page-header-sub">Classification Models Predicting Batsman Efficiency (Efficient vs Not Efficient)</div>
+        </div>
+
+        <div class="glass-panel" style="margin-bottom: 2rem; border-color: var(--primary);">
+          <div class="panel-title">
+            <span class="panel-title-icon" style="color:var(--primary)"><i class="fa-solid fa-trophy"></i> Best Machine Learning Model</span>
+          </div>
+          <div style="text-align: center; padding: 2rem;">
+            <h2 id="cls-best-model-name" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;">Loading...</h2>
+            <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 800px; margin: 0 auto 2rem;">
+              This classification task determines whether a batsman is highly efficient (top 20%) based on their Batting Efficiency Score. The <strong style="color:var(--text-main)" id="cls-best-model-text">model</strong> performed best because its architecture perfectly captures the non-linear boundaries and underlying statistical relationships of the engineered dataset features.
+            </p>
+            <div class="hero-counters" style="grid-template-columns: repeat(4, 1fr);">
+              <div class="counter-card"><div class="counter-label">Accuracy</div><div class="counter-val" id="cls-acc">—</div></div>
+              <div class="counter-card blue"><div class="counter-label">Precision</div><div class="counter-val" id="cls-prec">—</div></div>
+              <div class="counter-card green"><div class="counter-label">Recall</div><div class="counter-val" id="cls-rec">—</div></div>
+              <div class="counter-card gold"><div class="counter-label">F1 Score</div><div class="counter-val" id="cls-f1">—</div></div>
+            </div>
+            <div class="hero-counters" style="grid-template-columns: repeat(3, 1fr); margin-top: 1.5rem;">
+              <div class="counter-card purple"><div class="counter-label">ROC-AUC</div><div class="counter-val" id="cls-roc">—</div></div>
+              <div class="counter-card"><div class="counter-label">MSE</div><div class="counter-val" id="cls-mse">—</div></div>
+              <div class="counter-card"><div class="counter-label">R² Score</div><div class="counter-val" id="cls-r2">—</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel" style="margin-bottom: 2rem;">
+          <div class="panel-title">
+            <span class="panel-title-icon"><i class="fa-solid fa-table"></i> Model Comparison Metrics</span>
+          </div>
+          <div class="table-wrapper" style="margin-top: 1rem;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1 Score</th><th>ROC-AUC</th><th>MSE</th><th>RMSE</th><th>R²</th>
+                </tr>
+              </thead>
+              <tbody id="cls-metrics-table">
+                <tr><td colspan="9" style="text-align:center;">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="glass-panel">
+          <div class="panel-title">
+            <span class="panel-title-icon"><i class="fa-solid fa-chart-line"></i> Performance Visualizations</span>
+          </div>
+          <div class="charts-grid" style="margin-top: 2rem;">
+            <div class="chart-wrapper static">
+              <img src="/assets/images/cls_confusion_matrix.png" alt="Confusion Matrix">
+              <div class="chart-caption">Confusion Matrix Heatmap</div>
+            </div>
+            <div class="chart-wrapper static">
+              <img src="/assets/images/cls_roc_curve.png" alt="ROC Curve">
+              <div class="chart-caption">ROC Curve</div>
+            </div>
+            <div class="chart-wrapper static" style="grid-column: span 2;">
+              <img src="/assets/images/cls_performance_dashboard.png" alt="Performance Dashboard">
+              <div class="chart-caption">Model Comparison Dashboard</div>
+            </div>
+            <div class="chart-wrapper static">
+              <img src="/assets/images/cls_accuracy_comparison.png" alt="Accuracy Comparison">
+              <div class="chart-caption">Accuracy Comparison Chart</div>
+            </div>
+            <div class="chart-wrapper static">
+              <img src="/assets/images/cls_f1_comparison.png" alt="F1 Comparison">
+              <div class="chart-caption">F1 Score Comparison Chart</div>
+            </div>
+            <div class="chart-wrapper static">
+              <img src="/assets/images/cls_precision_comparison.png" alt="Precision Comparison">
+              <div class="chart-caption">Precision Comparison Chart</div>
+            </div>
+            <div class="chart-wrapper static">
+              <img src="/assets/images/cls_recall_comparison.png" alt="Recall Comparison">
+              <div class="chart-caption">Recall Comparison Chart</div>
+            </div>
+            <div class="chart-wrapper static" style="grid-column: span 2;">
+              <img src="/assets/images/cls_feature_importance.png" alt="Feature Importance">
+              <div class="chart-caption">Feature Importance Graph (Random Forest)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════
            SECTION 6: LEADERBOARD
       ══════════════════════════════════ -->
       <section id="leaderboard" class="dashboard-section">
@@ -952,8 +1419,50 @@ async function loadCodeSnippets() {
   }
 }
 window.addEventListener("DOMContentLoaded", loadCodeSnippets);
-</script>
 
-<script src="/assets/js/dashboard.js"></script>
+async function loadClassificationMetrics() {
+  try {
+    const res = await fetch('/assets/classification_metrics.json');
+    const data = await res.json();
+    const bestModel = data['Best_Model'];
+    
+    document.getElementById('cls-best-model-name').textContent = bestModel;
+    document.getElementById('cls-best-model-text').textContent = bestModel;
+    
+    document.getElementById('cls-acc').textContent = (data[bestModel]['Accuracy'] * 100).toFixed(1) + '%';
+    document.getElementById('cls-prec').textContent = (data[bestModel]['Precision'] * 100).toFixed(1) + '%';
+    document.getElementById('cls-rec').textContent = (data[bestModel]['Recall'] * 100).toFixed(1) + '%';
+    document.getElementById('cls-f1').textContent = (data[bestModel]['F1 Score'] * 100).toFixed(1) + '%';
+    document.getElementById('cls-roc').textContent = data[bestModel]['ROC-AUC'].toFixed(3);
+    document.getElementById('cls-mse').textContent = data[bestModel]['MSE'].toFixed(3);
+    document.getElementById('cls-r2').textContent = data[bestModel]['R2 Score'].toFixed(3);
+    
+    let html = '';
+    for(const [model, m] of Object.entries(data)) {
+      if(model === 'Best_Model') continue;
+      const isBest = model === bestModel;
+      html += `<tr>
+        <td style="font-weight: ${isBest ? 'bold' : 'normal'}; color: ${isBest ? 'var(--primary)' : 'inherit'};">${model} ${isBest ? '⭐' : ''}</td>
+        <td>${(m['Accuracy'] * 100).toFixed(1)}%</td>
+        <td>${(m['Precision'] * 100).toFixed(1)}%</td>
+        <td>${(m['Recall'] * 100).toFixed(1)}%</td>
+        <td>${(m['F1 Score'] * 100).toFixed(1)}%</td>
+        <td>${m['ROC-AUC'].toFixed(3)}</td>
+        <td>${m['MSE'].toFixed(3)}</td>
+        <td>${m['RMSE'].toFixed(3)}</td>
+        <td>${m['R2 Score'].toFixed(3)}</td>
+      </tr>`;
+    }
+    document.getElementById('cls-metrics-table').innerHTML = html;
+    
+  } catch(e) {
+    console.error("Error loading classification metrics:", e);
+  }
+}
+window.addEventListener("DOMContentLoaded", loadClassificationMetrics);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/assets/js/ai_analyzer.js?v=3"></script>
+<script src="/assets/js/dashboard.js?v=3"></script>
 </body>
 </html>

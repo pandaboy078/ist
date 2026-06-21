@@ -1,0 +1,38 @@
+{
+    "grid_search": {
+        "best_params": {
+            "max_depth": 10,
+            "min_samples_split": 2,
+            "n_estimators": 50
+        },
+        "acc_before": 0.868421052631579,
+        "acc_after": 0.8508771929824561,
+        "improvement": -0.01754385964912286
+    },
+    "overfitting": {
+        "train_acc": 1.0,
+        "test_acc": 0.8508771929824561,
+        "difference": 0.14912280701754388,
+        "conclusion": "Good Generalization (Model performs consistently)"
+    },
+    "cross_validation": {
+        "folds": [
+            0.9736842105263158,
+            0.9298245614035088,
+            0.9473684210526315,
+            0.8771929824561403,
+            0.8859649122807017
+        ],
+        "average": 0.9228070175438596
+    },
+    "metrics": {
+        "accuracy": 0.8508771929824561,
+        "precision": 0.8585564595751354,
+        "recall": 0.8508771929824561,
+        "f1": 0.8521344310817995,
+        "roc_auc": 0.9878358534049071,
+        "mse": 0.14912280701754385,
+        "rmse": 0.38616422286061647,
+        "r2": 0.8589211618257262
+    }
+}

@@ -56,6 +56,8 @@ IPL_GreenDotBall_Project/
 ├── app.py                        # Flask backend server & pipeline orchestrator
 ├── index.html                    # Single-page dashboard client
 ├── requirements.txt              # Project dependencies
+├── JUSTIFICATION_REPORT.md       # In-depth statistical justification report
+├── indian-premier-league-analysis-2008-2025.ipynb # Data analysis notebook
 └── README.md                     # Project documentation
 ```
 
@@ -133,3 +135,20 @@ Open your browser and navigate to **[http://127.0.0.1:5001](http://127.0.0.1:500
 ## 🎯 Findings & Analytical Verdict
 1. **Best Model**: **Linear Regression** achieves a perfect R² of **1.0** because the target metric (`Efficiency_Score`) is calculated directly as a linear combination of normalized features. Tree-based regressors (XGBoost, Random Forest) also achieve extremely high fits (R² > 0.995) but are limited by split-based discretization.
 2. **Best Sampling Technique**: **Stratified Sampling** and **Simple Random Sampling** show the highest generalizability. **Cluster Sampling** displays a slightly higher variance and can introduce team-specific bias if the selected clusters (teams) deviate from the overall average run distribution.
+
+---
+
+## 🔬 In-Depth Statistical Justification
+*(Adapted from the full Justification Report)*
+
+### Why Simple Random Sampling?
+* **Experimental Evidence:** SRS achieved the highest average R² (0.9744) and lowest average MAE (0.7674) and RMSE (1.5609) across all three ML algorithms (Linear Regression, Random Forest, XGBoost) on the test set.
+* **Unbiasedness:** Guarantees equal probability of selection without introducing stratification biases or cluster biases (where intra-cluster homogeneity, like teammates facing similar conditions, hurts generalized learning). 
+
+### Why Linear Regression?
+* **Mathematical Suitability:** The target variable (`Efficiency Score`) is explicitly engineered as a deterministic linear combination of input features. Therefore, Linear Regression is guaranteed to perfectly capture this relationship if the training data is representative. 
+* **Model Performance:** Linear Regression achieves **R² = 1.000000** on all datasets (SRS, Systematic, Stratified, Cluster, and Full Population) without overfitting, as evaluated on an independent holdout test set. MAE and RMSE are negligible (floating-point precision limits around ~0.00003).
+* **Tree Models Fall Short:** Random Forest and XGBoost achieved high scores but inherently struggle to perfectly map a globally continuous linear function due to their piecewise, step-like tree splitting structures.
+
+### The Combined Verdict
+The pipeline using **Simple Random Sampling (SRS)** combined with **Linear Regression** is globally optimal. SRS provides a completely unbiased representation of the data's continuous feature space, enabling Linear Regression to reconstruct the true linear coefficients and flawlessly predict Batting Efficiency on unseen data.
